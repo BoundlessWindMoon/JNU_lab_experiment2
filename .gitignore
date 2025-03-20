@@ -1,0 +1,4 @@
+build/
+gemm_evaluator
+
+*.swp
