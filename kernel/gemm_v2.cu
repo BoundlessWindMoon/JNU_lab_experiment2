@@ -18,10 +18,13 @@ extern "C" __global__ void gemm_v2(float *A, float *B, float *C, int M, int N, i
 
     float r_c[TM][TN] = {0.0};              
 
-    int load_a_smem_m = tid >> 1;           
-    int load_a_smem_k = (tid & 1) << 2;     
-    int load_b_smem_k = tid >> 5;           
-    int load_b_smem_n = (tid & 31) << 2;    
+    // ========================== 拷贝gemm_v1代码 ==========================
+    // 此处 load_a_smem_m, load_a_smem_k, load_b_smem_k, load_b_smem_n 用于占位，需要修改！
+    int load_a_smem_m = 0;           
+    int load_a_smem_k = 0;     
+    int load_b_smem_k = 0;           
+    int load_b_smem_n = 0;
+    // ========================== 拷贝gemm_v1代码 ==========================     
 
     int load_a_gmem_m = by * BM + load_a_smem_m;
     int load_b_gmem_n = bx * BN + load_b_smem_n;
