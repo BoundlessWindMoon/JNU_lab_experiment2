@@ -11,7 +11,7 @@ LIB_DIR = ./lib
 BUILD_DIR = ./build
 
 # 编译选项
-NVCCFLAGS = -O3 -arch=sm_89 -I$(INC_DIR)
+NVCCFLAGS = -O3 -w -arch=sm_89 -I$(INC_DIR)
 ARFLAGS = rcs
 
 # 目标文件
