@@ -10,8 +10,12 @@ extern "C" {
 
 //算子接口
 extern __global__ void gemm_naive(float* A, float* B, float* C, int M, int N, int K);
-extern __global__ void gemm_smem(float* A, float* B, float* C, int M, int N, int K);
-
+extern __global__ void gemm_v0(float* A, float* B, float* C, int M, int N, int K);
+extern __global__ void gemm_v1(float* A, float* B, float* C, int M, int N, int K);
+extern __global__ void gemm_v2(float* A, float* B, float* C, int M, int N, int K);
+extern __global__ void gemm_v0_ans(float* A, float* B, float* C, int M, int N, int K);
+extern __global__ void gemm_v1_ans(float* A, float* B, float* C, int M, int N, int K);
+extern __global__ void gemm_v2_ans(float* A, float* B, float* C, int M, int N, int K);
 #ifdef __cplusplus
 }
 #endif
