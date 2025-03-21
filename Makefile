@@ -33,4 +33,4 @@ $(MAIN_TARGET): $(SRC_MAIN) $(KERNELS) $(LIB_TARGET)
 	$(NVCC) $(NVCCFLAGS) $^ -o $@ -L$(LIB_DIR) -l$(LIB_NAME)
 
 clean:
-	rm -rf $(LIB_DIR) $(BUILD_DIR) $(MAIN_TARGET)
+	rm -rf $(MAIN_TARGET)
