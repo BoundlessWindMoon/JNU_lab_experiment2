@@ -26,7 +26,7 @@ KERNELS := $(shell find $(KERNEL_DIR) -name '*.cu')
 # 伪目标
 .PHONY: all clean
 
-all: $(LIB_TARGET) $(MAIN_TARGET)
+all: $(MAIN_TARGET)
 
 # 编译可执行文件
 $(MAIN_TARGET): $(SRC_MAIN) $(KERNELS) $(LIB_TARGET)

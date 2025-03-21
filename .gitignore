@@ -1,4 +1,5 @@
 build/
+src/rank.cu
 gemm_evaluator
 Makefile_Admin
 *.swp

@@ -29,6 +29,7 @@ bool verify_result(float *student_C, float *baseline_C, int size) {
     const float tolerance = 1e-3;
     for (int i = 0; i < size; i++) {
         if (fabs(student_C[i] - baseline_C[i]) > tolerance) {
+            printf("wrong result! index %d your result is %f, correct result is %f\n", i, student_C[i], baseline_C[i]);
             return false;
         }
     }
@@ -36,7 +37,7 @@ bool verify_result(float *student_C, float *baseline_C, int size) {
 }
 
 // 评估函数实现
-float get_kernel_rank(KernelFunc student_kernel) {
+float get_kernel_rank(KernelFunc student_kernel, int block_x, int block_y, int grid_x, int grid_y) {
     cudaEvent_t start_student, stop_student;
     cudaEvent_t start_baseline, stop_baseline;
     cudaEventCreate(&start_student);
@@ -82,11 +83,13 @@ float get_kernel_rank(KernelFunc student_kernel) {
         cudaMemcpy(d_B, h_B, K * N * sizeof(float), cudaMemcpyHostToDevice);
 
         // 运行学生核函数并计时
-        dim3 block(16, 16);
-        dim3 grid((N + block.x - 1) / block.x, (M + block.y - 1) / block.y);
+        dim3 block_student(block_x, block_y);
+        dim3 grid_student((N + grid_x - 1) / grid_x, (M + grid_y - 1) / grid_y);
+        dim3 block_baseline(16, 16);
+        dim3 grid_baseline((N + block_baseline.x - 1) / block_baseline.x, (M + block_baseline.y - 1) / block_baseline.y);
 
         cudaEventRecord(start_student);
-        student_kernel<<<grid, block>>>(d_A, d_B, d_student_C, M, N, K);
+        student_kernel<<<grid_student, block_student>>>(d_A, d_B, d_student_C, M, N, K);
         cudaEventRecord(stop_student);
         cudaEventSynchronize(stop_student);
         cudaEventElapsedTime(&elapsed_time_student, start_student, stop_student);
@@ -94,7 +97,7 @@ float get_kernel_rank(KernelFunc student_kernel) {
 
         // 运行基准核函数
         cudaEventRecord(start_baseline);
-        baseline_gemm_kernel<<<grid, block>>>(d_A, d_B, d_baseline_C, M, N, K);
+        baseline_gemm_kernel<<<grid_baseline, block_baseline>>>(d_A, d_B, d_baseline_C, M, N, K);
         cudaEventRecord(stop_baseline);
         cudaEventSynchronize(stop_baseline);
         cudaEventElapsedTime(&elapsed_time_baseline, start_baseline, stop_baseline);
@@ -103,7 +106,6 @@ float get_kernel_rank(KernelFunc student_kernel) {
         // 拷贝结果回主机
         cudaMemcpy(h_student_C, d_student_C, M * N * sizeof(float), cudaMemcpyDeviceToHost);
         cudaMemcpy(h_baseline_C, d_baseline_C, M * N * sizeof(float), cudaMemcpyDeviceToHost);
-
         // 检查正确性
         if (!verify_result(h_student_C, h_baseline_C, M * N)) {
             is_correct = false;
@@ -130,7 +132,7 @@ float get_kernel_rank(KernelFunc student_kernel) {
 
     // Sigmoid评分逻辑：时间越短分数越高
     float normalized_time = total_time_student / total_time_baseline;
-    float score = 50.0f + 50.0f / (1.0f + expf(normalized_time - 1.0f));  // 60分起步，时间越短接近100分
+    float score = 40.0f + 60.0f / (1.0f + expf(normalized_time - 1.0f));  // 60分起步，时间越短接近100分
     return fminf(score, 100.0f);  // 确保不超过100分
 }
 

@@ -6,7 +6,7 @@ extern "C" {
 #endif
 
 // 评分函数接口
-float get_kernel_rank(KernelFunc student_kernel);
+float get_kernel_rank(KernelFunc student_kernel, int BM, int BN, int TM, int TN);
 
 #ifdef __cplusplus
 }
