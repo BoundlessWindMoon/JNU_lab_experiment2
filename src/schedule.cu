@@ -19,7 +19,7 @@ Kernel get_kernel(int M, int N, int K) {
     // int block_x = 16;
     // int block_y = 16;
 
-    KernelFunc kernel_func = gemm_v0_test;
+    KernelFunc kernel_func = gemm_naive;
     dim3 block(block_x, block_y);
     dim3 grid((N + N_tile - 1) / N_tile, (M + M_tile - 1) / M_tile);
 // ========================== 实验代码区域结束：算子配置 ==========================
