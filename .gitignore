@@ -4,5 +4,6 @@ kernel/gemm_v0_ans.cu
 kernel/gemm_v1_ans.cu
 kernel/gemm_v2_ans.cu
 gemm_evaluator
+tools/detect_arch
 Makefile_Admin
 *.swp
