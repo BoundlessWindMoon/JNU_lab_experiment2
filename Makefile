@@ -20,7 +20,7 @@ LIB_TARGET = $(LIB_DIR)/lib$(LIB_NAME).a
 MAIN_TARGET = gemm_evaluator
 
 # 源文件
-SRC_MAIN = $(SRC_DIR)/main.cu
+SRCS :=  $(shell find $(SRC_DIR) -name '*.cu')
 KERNELS := $(shell find $(KERNEL_DIR) -name '*.cu')
 
 # 伪目标
@@ -29,7 +29,7 @@ KERNELS := $(shell find $(KERNEL_DIR) -name '*.cu')
 all: $(MAIN_TARGET)
 
 # 编译可执行文件
-$(MAIN_TARGET): $(SRC_MAIN) $(KERNELS) $(LIB_TARGET)
+$(MAIN_TARGET): $(SRCS) $(KERNELS) $(LIB_TARGET)
 	$(NVCC) $(NVCCFLAGS) $^ -o $@ -L$(LIB_DIR) -l$(LIB_NAME)
 
 clean:
