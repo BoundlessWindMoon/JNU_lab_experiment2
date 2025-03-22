@@ -11,7 +11,8 @@ LIB_DIR = ./lib
 BUILD_DIR = ./build
 
 # 编译选项
-NVCCFLAGS = -O3 -w -arch=sm_89 -I$(INC_DIR)
+COMPUTE_CAPABILITY := $(shell nvcc tools/detect_arch.cu -o tools/detect_arch && ./tools/detect_arch || echo "sm_89")
+NVCCFLAGS = -O3 -w -arch=$(COMPUTE_CAPABILITY) -I$(INC_DIR)
 ARFLAGS = rcs
 
 # 目标文件
