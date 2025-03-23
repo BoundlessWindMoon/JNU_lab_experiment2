@@ -30,7 +30,7 @@ KERNELS := $(shell find $(KERNEL_DIR) -name '*.cu')
 all: $(MAIN_TARGET)
 
 # 编译可执行文件
-$(MAIN_TARGET): $(SRCS) $(KERNELS) $(LIB_TARGET)
+$(MAIN_TARGET): $(SRCS) $(KERNELS) 
 	$(NVCC) $(NVCCFLAGS) $^ -o $@ -L$(LIB_DIR) -l$(LIB_NAME)
 
 clean:
