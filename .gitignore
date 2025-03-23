@@ -1,5 +1,5 @@
 build/
-src/rank.cu
+lib_src/rank.cu
 kernel/gemm_v0_ans.cu
 kernel/gemm_v1_ans.cu
 kernel/gemm_v2_ans.cu
